@@ -1,0 +1,6 @@
+pillow
+pytesseract
+imagehash
+opencv-python
+numpy 
+imutils
