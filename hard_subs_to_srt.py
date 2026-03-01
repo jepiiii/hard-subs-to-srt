@@ -4,10 +4,10 @@ from os import times
 from queue import Queue
 from threading import Thread
 
-import cv2
 import imagehash
 import numpy
 import pytesseract
+from google.colab.patches import cv2_imshow
 from imutils.video import FileVideoStream
 from PIL import Image
 
