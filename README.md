@@ -25,13 +25,13 @@ the optical character recognition.
 
 To download the remaining python package dependencies, run
 ```
-pipenv install
+uv pip install --requirements Requirements.txt
 ```
 
 ## How to use
 To extract hardcoded subtitles from a video file run:
 ```
-pipenv run python hard_subs_to_srt.py "path/to/video_file.mkv" "path/to/subtitles.srt"
+uv run python hard_subs_to_srt.py "path/to/video_file.mkv" "path/to/subtitles.srt"
 ```
 
 This opens a GUI where you can see the script working on the video. Commands
@@ -43,7 +43,7 @@ that are available when running the video are:
 For more information, have a look at the help documentation of the script by
 running:
 ```
-pipenv run python hard_subs_to_srt.py -h
+uv run python hard_subs_to_srt.py -h
 ```
 
 Note that the script is currently locked for specific format of video input. To
