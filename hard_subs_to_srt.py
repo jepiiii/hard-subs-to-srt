@@ -11,15 +11,16 @@ import pytesseract
 from imutils.video import FileVideoStream
 from PIL import Image
 
+pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 FIRST_FRAME = 1  # Skip frames up to this point
 PREVIEW_MAX_SIZE = (960, 640)
 
 # The subtitles are within these bounds. The bounds are not super tight since
 # Tesseract works better with some blank space around the text.
-SUBTITLE_BOUNDS_LEFT = 280
-SUBTITLE_BOUNDS_RIGHT = 1000
-SUBTITLE_BOUNDS_TOP = 550
-SUBTITLE_BOUNDS_BOTTOM = 700
+SUBTITLE_BOUNDS_LEFT = 250
+SUBTITLE_BOUNDS_RIGHT = 850
+SUBTITLE_BOUNDS_TOP = 535
+SUBTITLE_BOUNDS_BOTTOM = 710
 # We force some space above and below the subtitles to be white before feeding
 # the text images to Tesseract.
 SUBTITLE_BLANK_SPACE_ABOVE = 46
@@ -27,31 +28,31 @@ SUBTITLE_BLANK_SPACE_BELOW = 63
 
 # Hardcoded subtitles are not entirely white. To filter out subtitles we look
 # for pixels that are as bright or brighter than this. Completely white is 255
-SUBTITLES_MIN_VALUE = 200
+SUBTITLES_MIN_VALUE = 76
 # We add some blur to the subtitle images before feeding them to Tesseract since
 # some pixels within the subtitles are not white enough. This also eliminates
 # smaller groups of white pixels outside of the subtitles. A bigger value means
 # more blur.
-SUBTITLE_IMAGE_BLUR_SIZE = (21, 21)
+SUBTITLE_IMAGE_BLUR_SIZE = (1, 1)
 # After blurring the image we make the image monochrome since that works better
 # for Tesseract. This is the limit for what should be considered a (white)
 # subtitle pixel after the blur.
-SUBTITLES_MIN_VALUE_AFTER_BLUR = 55
+SUBTITLES_MIN_VALUE_AFTER_BLUR = 160
 
 # Only use Tesseract if the subtitle changes. This is for performance and also
 # to avoid having single frames of Tesseract mistakes that get entered into the
 # SRT file. To tell if two images are of the same subtitle we compare the image
 # hashes of them. See https://pypi.org/project/ImageHash/ for more information.
 IMAGE_HASH_SIZE = 32
-MAX_HASH_DIFFERENCE_FOR_SAME_SUBTITLE = 20
+MAX_HASH_DIFFERENCE_FOR_SAME_SUBTITLE = 120
 NO_SUBTILE_FRAME_HASH = imagehash.hex_to_hash("0" * 256)
 
-TESSERACT_EXPECTED_LANGUAGE = "chi_sim"
+TESSERACT_EXPECTED_LANGUAGE = "jpn"
 # Page segmentation mode (PSM) 13 means "Raw line. Treat the image as a single
 # text line, bypassing hacks that are Tesseract-specific." See this link for
 # other options:
 # https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html#page-segmentation-method
-TESSERACT_CONFIG = "--psm 13"
+TESSERACT_CONFIG = "--psm 3"
 
 # Tesseract makes mistakes. Some are easy to fix. Keys in this dictionary will
 # be replaced with their respective values.
@@ -215,6 +216,7 @@ class SubtitleChange:
     def __init__(self, frame, timestamp):
         self.frame = frame
         self.timestamp = timestamp
+        
 
     def read_subtitle(self):
         line = pytesseract.image_to_string(
@@ -309,7 +311,7 @@ def millis_to_srt_timestamp(total_millis):
 
 
 def get_millis_for_frame(video, frame_number):
-    return 1000.0 * frame_number / video.stream.get(cv2.CAP_PROP_FPS)
+    return 1000.0 * frame_number / 60
 
 
 if __name__ == "__main__":
