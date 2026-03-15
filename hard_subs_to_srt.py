@@ -18,7 +18,7 @@ PREVIEW_MAX_SIZE = (960, 640)
 # The subtitles are within these bounds. The bounds are not super tight since
 # Tesseract works better with some blank space around the text.
 SUBTITLE_BOUNDS_LEFT = 250
-SUBTITLE_BOUNDS_RIGHT = 850
+SUBTITLE_BOUNDS_RIGHT = 900
 SUBTITLE_BOUNDS_TOP = 535
 SUBTITLE_BOUNDS_BOTTOM = 710
 # We force some space above and below the subtitles to be white before feeding
@@ -43,9 +43,11 @@ SUBTITLES_MIN_VALUE_AFTER_BLUR = 160
 # to avoid having single frames of Tesseract mistakes that get entered into the
 # SRT file. To tell if two images are of the same subtitle we compare the image
 # hashes of them. See https://pypi.org/project/ImageHash/ for more information.
-IMAGE_HASH_SIZE = 32
-MAX_HASH_DIFFERENCE_FOR_SAME_SUBTITLE = 120
-NO_SUBTILE_FRAME_HASH = imagehash.hex_to_hash("0" * 256)
+IMAGE_HASH_SIZE = 128
+MAX_HASH_DIFFERENCE_FOR_SAME_SUBTITLE = 80
+#this thing is responsible for setting blank image hash size to32 
+#NO_SUBTILE_FRAME_HASH = imagehash.hex_to_hash("0" * 256) 
+NO_SUBTILE_FRAME_HASH = imagehash.hex_to_hash("0" * 4096)
 
 TESSERACT_EXPECTED_LANGUAGE = "jpn"
 # Page segmentation mode (PSM) 13 means "Raw line. Treat the image as a single
