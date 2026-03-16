@@ -1,0 +1,40 @@
+initial fixes: 
+
+change tesseract.exe to portable then use relative path
+
+expand subtitle window or even the whole video and let tesseract segment everything
+
+
+
+next problem is no subtitles being generated (one letter at best)
+ 
+this has to do with the MAX_HASH_DIFFERENCE_FOR_SAME_SUBTITLE value which is the one responsible for this problem. 
+lowering the value fixes it 
+
+i also tried a hash size of 128 (note that the NO_SUBTITLE_FRAME_HASH also has to be modified to equate in size) 
+but i think that will be detrimental since the animation of the second line will have a big effect on the hashes 
+generated (too much detail captured)
+LOWER HASH SIZE
+
+
+this is a dilemma since a lower hash size would be like squinting at the Japanese characters which would result in 
+the first scanned subtitle appearing in its timestamp but also in place of the succeeding subtitle
+
+BUT A HIGHER HASH SIZE WOULD CREATE DUPLICATES WHENEVER THE SECOND LINE OF THE SUBTITLES ARE ANIMATED
+
+
+FIX division by zero error when using video.stream.get(cv2.CAP_PROP_FPS)
+i think a crude fix would be to store its value in a variable and when it is zero, assume it to be 60                                
+
+code snippet:
+initial_fps = video.stream.get(cv2.CAP_PROP_FPS)
+frame_number_in_millis = 1000 * frame_number / initial_fps
+
+
+i guess our endgame is to make a GUI for this
+
+so instead of typing uv run python arg video_file srt_file
+we can just browse the respective files and have the ORIGINAL and MONOCHROME FRAME displayed in realtime 
+
+
+
